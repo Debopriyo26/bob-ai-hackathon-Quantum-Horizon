@@ -1,0 +1,164 @@
+{
+  "renal_impairment": {
+    "metformin": {
+      "weight": 10,
+      "reason": "Risk of lactic acidosis; contraindicated if eGFR <30 mL/min/1.73m²"
+    },
+    "digoxin": {
+      "weight": 10,
+      "reason": "Narrow therapeutic index; renally cleared — toxic accumulation at reduced GFR"
+    },
+    "lithium": {
+      "weight": 10,
+      "reason": "Exclusively renally excreted; high risk of toxicity with impaired clearance"
+    },
+    "spironolactone": {
+      "weight": 10,
+      "reason": "Risk of life-threatening hyperkalaemia; avoid if eGFR <30"
+    },
+    "NSAIDs": {
+      "weight": 10,
+      "reason": "Inhibit prostaglandin-mediated renal perfusion; can precipitate acute kidney injury"
+    },
+    "codeine": {
+      "weight": 10,
+      "reason": "Active metabolite morphine-6-glucuronide accumulates; risk of respiratory depression"
+    },
+    "warfarin": {
+      "weight": 5,
+      "reason": "Altered protein binding in uraemia; INR monitoring frequency should increase"
+    },
+    "simvastatin": {
+      "weight": 5,
+      "reason": "Increased myopathy risk with reduced renal clearance of active metabolites"
+    }
+  },
+  "hepatic_impairment": {
+    "warfarin": {
+      "weight": 10,
+      "reason": "Severely impaired synthesis of clotting factors amplifies anticoagulant effect"
+    },
+    "methotrexate": {
+      "weight": 10,
+      "reason": "Extensively hepatically metabolised; severe hepatotoxicity risk"
+    },
+    "amiodarone": {
+      "weight": 10,
+      "reason": "Hepatotoxic; markedly elevated exposure in hepatic failure"
+    },
+    "statins": {
+      "weight": 10,
+      "reason": "Primarily hepatically metabolised; impaired clearance raises hepatotoxicity and myopathy risk"
+    },
+    "acetaminophen": {
+      "weight": 10,
+      "reason": "Depleted glutathione reserves in liver disease increase NAPQI toxicity risk"
+    },
+    "sertraline": {
+      "weight": 5,
+      "reason": "Hepatic metabolism impaired; use half dose and monitor for serotonergic toxicity"
+    },
+    "diazepam": {
+      "weight": 10,
+      "reason": "Prolonged half-life; risk of encephalopathy — prefer lorazepam or oxazepam"
+    },
+    "simvastatin": {
+      "weight": 10,
+      "reason": "Active site hepatic uptake impaired; elevated systemic exposure and hepatotoxicity risk"
+    }
+  },
+  "heart_failure": {
+    "NSAIDs": {
+      "weight": 10,
+      "reason": "Sodium and water retention worsens fluid overload; blunts efficacy of diuretics"
+    },
+    "verapamil": {
+      "weight": 10,
+      "reason": "Negative inotrope; can precipitate acute decompensation in reduced-EF heart failure"
+    },
+    "diltiazem": {
+      "weight": 10,
+      "reason": "Negative inotrope; contraindicated in HFrEF — worsens cardiac output"
+    },
+    "thiazolidinediones": {
+      "weight": 10,
+      "reason": "Cause fluid retention and peripheral oedema; worsen heart failure status"
+    },
+    "amiodarone": {
+      "weight": 5,
+      "reason": "Thyroid and pulmonary toxicity; negative chronotropy — monitor closely in HF"
+    },
+    "metformin": {
+      "weight": 5,
+      "reason": "Previously cautioned in unstable HF due to lactic acidosis risk; avoid if haemodynamically compromised"
+    },
+    "digoxin": {
+      "weight": 5,
+      "reason": "Narrow therapeutic index; hypokalaemia from diuretics increases toxicity risk"
+    },
+    "warfarin": {
+      "weight": 5,
+      "reason": "Hepatic congestion in severe HF reduces clotting factor synthesis; INR may fluctuate"
+    }
+  },
+  "diabetes": {
+    "corticosteroids": {
+      "weight": 10,
+      "reason": "Potent hyperglycaemic effect; often requires insulin dose escalation"
+    },
+    "thiazide_diuretics": {
+      "weight": 5,
+      "reason": "Mild glucose intolerance and hypokalaemia; monitor HbA1c"
+    },
+    "beta_blockers": {
+      "weight": 5,
+      "reason": "Mask hypoglycaemia symptoms (tachycardia suppressed); prolonged hypoglycaemia risk"
+    },
+    "fluoroquinolones": {
+      "weight": 5,
+      "reason": "Associated with both hypoglycaemia and hyperglycaemia; monitor blood glucose closely"
+    },
+    "metformin": {
+      "weight": 5,
+      "reason": "First-line but requires eGFR monitoring; combination with renal impairment is high risk"
+    },
+    "statins": {
+      "weight": 5,
+      "reason": "Modest increase in new-onset diabetes risk; benefit-risk ratio still favourable in most patients"
+    },
+    "codeine": {
+      "weight": 5,
+      "reason": "Opioid-induced nausea and appetite disruption may destabilise glycaemic control"
+    }
+  },
+  "hypertension": {
+    "NSAIDs": {
+      "weight": 10,
+      "reason": "Sodium retention and vasoconstriction raise blood pressure; blunt antihypertensive therapy"
+    },
+    "decongestants": {
+      "weight": 10,
+      "reason": "Sympathomimetic effect (pseudoephedrine) causes acute blood pressure elevation"
+    },
+    "cocaine_amphetamines": {
+      "weight": 10,
+      "reason": "Catecholamine release causes hypertensive crisis"
+    },
+    "venlafaxine": {
+      "weight": 5,
+      "reason": "Dose-dependent noradrenaline reuptake inhibition raises systolic BP; monitor at higher doses"
+    },
+    "oral_contraceptives": {
+      "weight": 5,
+      "reason": "Oestrogen component promotes renin-angiotensin activation; can increase BP by 3–5 mmHg"
+    },
+    "amiodarone": {
+      "weight": 5,
+      "reason": "Peripheral vasodilation may cause hypotension; unpredictable BP effect in polypharmacy"
+    },
+    "ciclosporin": {
+      "weight": 10,
+      "reason": "Causes vasoconstriction and sodium retention; a major cause of drug-induced hypertension"
+    }
+  }
+}

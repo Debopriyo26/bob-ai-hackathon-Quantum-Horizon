@@ -9,51 +9,51 @@
 # =============================================================================
 
 team:
-  name: ""                             # REQUIRED — e.g., "Orion Squad"
-  track: ""                            # REQUIRED — one of: AI | DevOps | Sustainability | Open
+  name: "Quantum Horizon"                              # REQUIRED — e.g., "Orion Squad"
+  track: "AI"                                          # REQUIRED — one of: AI | DevOps | Sustainability | Open
   lead:
-    name: ""                           # REQUIRED — e.g., "Alice Chen"
-    email: ""                          # REQUIRED — e.g., "alice.chen@ibm.com"
+    name: "Debopriyo Bagchi"                           # REQUIRED — e.g., "Alice Chen"
+    email: "bagchi07debopriyo@gmail.com"               # REQUIRED — e.g., "alice.chen@ibm.com"
   members:
-    - name: ""                         # REQUIRED — Team member 1
-      email: ""
-    - name: ""                         # Add more members by copying the two lines above
-      email: ""
-    - name: ""
-      email: ""
+    - name: "Arnob Chaudhuri"                          # REQUIRED — Team member 1
+      email: "chaudhuriarnob@gmail.com"
+    - name: "Shafik Hawawala"                          # Add more members by copying the two lines above
+      email: "shafik.hawawala@gmail.com"
+    - name: "Rudra Joshi"
+      email: "rudranjoshi911@gmail.com"
+    - name: "Yashsh Gajjar"
+      email: "yashashgajjar800@gmail.com"
+    - name: "Heet Jain"
+      email: "heet.jain@gmail.com"
 
 submission:
-  title: ""                            # REQUIRED — Project display name, e.g., "SmartOps Dashboard"
+  title: "Clin.IQ"                                     # REQUIRED — Project display name, e.g., "SmartOps Dashboard"
 
-  problem_statement: >                 # REQUIRED — 1-3 sentences. What problem? Who has it?
-    Replace this text with a concise description of the real-world problem
-    your project addresses and who experiences it.
+  problem_statement: >                                 # REQUIRED — 1-3 sentences. What problem? Who has it?
+    Clinicians lack the time to manually cross-reference complex drug-drug interactions, patient comorbidities, and pharmacogenomic data during time-pressured appointments, leading to a high risk of adverse drug events.
 
-  solution_summary: >                  # REQUIRED — 1-3 sentences. What did you build?
-    Replace this text with a clear description of your solution
-    and how it addresses the problem above.
+  solution_summary: >                                  # REQUIRED — 1-3 sentences. What did you build?
+    Clin.IQ is a dual-role (Doctor/Patient) clinical decision support platform that evaluates polypharmacy regimens using a local rule-based AI engine to generate instant risk scores, clinical insights, and safer prescribing alternatives.
 
-  key_features:                        # REQUIRED — List 3 to 5 specific features you implemented
-    - ""                               # e.g., "Real-time pipeline anomaly detection using watsonx.ai"
-    - ""
-    - ""
-    - ""                               # optional 4th
-    - ""                               # optional 5th
+  key_features:                                        # REQUIRED — List 3 to 5 specific features you implemented
+    - "Multi-factor Polypharmacy Risk Engine: Deterministic rule-based evaluation incorporating Drug-Drug Interactions (DDI), Comorbidity Contraindications, and Pharmacogenomic (PGx CPIC) risk factors."
+    - "Dual-Role Workflow Experience: Dedicated Clinician Portal with detailed pharmacology insights, alternative prescribing suggestions, and an intuitive Patient Health Portal."
+    - "Local NLP Clinical Co-Pilot: Offline natural language processing for rapid unstructured medical text interpretation, symptom analysis, and instant clinical reasoning without cloud latency."
+    - "Automated Safer Prescribing Alternatives: Context-aware drug substitution engine that recommends safer medication options with lower interaction profiles."
+    - "Interactive Risk Stratification & Visual Analytics: Real-time risk dials, breakdown charts, and interaction severity matrices for quick clinical decision-making."
 
   tech_stack:
-    languages: []                      # REQUIRED — e.g., ["Python", "TypeScript"]
-    frameworks: []                     # e.g., ["FastAPI", "React"]
-    ibm_technologies: []               # e.g., ["watsonx.ai", "IBM Bob", "IBM Cloud Functions"]
-    databases: []                      # e.g., ["PostgreSQL", "Redis"]
-    other: []                          # e.g., ["Docker", "GitHub Actions", "Slack API"]
+    languages: ["Python", "JavaScript", "HTML", "CSS"] # REQUIRED — e.g., ["Python", "TypeScript"]
+    frameworks: ["Flask", "Flask-CORS"]                # e.g., ["FastAPI", "React"]
+    ibm_technologies: ["watsonx.ai", "IBM Bob AI"]     # e.g., ["watsonx.ai", "IBM Bob", "IBM Cloud Functions"]
+    databases: ["SQLite"]                              # e.g., ["PostgreSQL", "Redis"]
+    other: ["Local NLP", "RxNav REST API", "Gunicorn"] # e.g., ["Docker", "GitHub Actions", "Slack API"]
 
-  what_we_are_most_proud_of: >         # Optional but recommended — guides judges to your best work
-    Replace with what aspect of the submission you consider strongest
-    and want judges to pay special attention to.
+  what_we_are_most_proud_of: >                         # Optional but recommended — guides judges to your best work
+    Developing an instant, deterministic multi-dimensional clinical risk evaluation engine that operates with zero cloud latency, cross-referencing complex Drug-Drug Interactions, CPIC pharmacogenomic guidelines, and patient comorbidity weights while simultaneously providing actionable safer prescribing alternatives and dual doctor/patient tailored interfaces.
 
-  known_limitations: >                 # Optional but recommended — be honest about gaps
-    Replace with any known limitations, incomplete features,
-    or shortcuts taken due to time constraints.
+  known_limitations: >                                 # Optional but recommended — be honest about gaps
+    The current pharmacogenomics and comorbidity rule-bases cover high-priority therapeutic classes (cardiovascular, psychiatric, pain management, anticoagulant, and metabolic) and CPIC Level A/B guidelines; comprehensive coverage across all rare drugs is targeted for subsequent releases. Authentication in the hackathon prototype uses tokenized session storage.
 
 # =============================================================================
 # ARTIFACT LOCATIONS

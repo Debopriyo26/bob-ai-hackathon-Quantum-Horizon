@@ -1,0 +1,130 @@
+[
+  {
+    "gene": "CYP2D6",
+    "drug": "codeine",
+    "interaction_type": "metabolism",
+    "poor_metaboliser_recommendation": "Avoid — life-threatening toxicity (ultra-rapid conversion to morphine or near-zero conversion risk)",
+    "intermediate_metaboliser_recommendation": "Use lower dose with caution; monitor for opioid toxicity",
+    "severity": "high"
+  },
+  {
+    "gene": "CYP2D6",
+    "drug": "tramadol",
+    "interaction_type": "metabolism",
+    "poor_metaboliser_recommendation": "Avoid — markedly reduced analgesic efficacy; consider alternative opioid",
+    "intermediate_metaboliser_recommendation": "Use with caution; titrate dose carefully",
+    "severity": "high"
+  },
+  {
+    "gene": "CYP2D6",
+    "drug": "metoprolol",
+    "interaction_type": "metabolism",
+    "poor_metaboliser_recommendation": "Reduce dose by 50–75%; risk of bradycardia and hypotension",
+    "intermediate_metaboliser_recommendation": "Reduce dose by 25–50%; monitor heart rate and blood pressure",
+    "severity": "moderate"
+  },
+  {
+    "gene": "CYP2D6",
+    "drug": "amitriptyline",
+    "interaction_type": "metabolism",
+    "poor_metaboliser_recommendation": "Avoid or use 50% of standard dose; high plasma concentrations risk cardiotoxicity",
+    "intermediate_metaboliser_recommendation": "Start at low dose; titrate slowly with TDM",
+    "severity": "high"
+  },
+  {
+    "gene": "CYP2D6",
+    "drug": "haloperidol",
+    "interaction_type": "metabolism",
+    "poor_metaboliser_recommendation": "Reduce dose; elevated levels risk QTc prolongation and extrapyramidal effects",
+    "intermediate_metaboliser_recommendation": "Use lower starting dose; monitor ECG",
+    "severity": "moderate"
+  },
+  {
+    "gene": "CYP2C19",
+    "drug": "clopidogrel",
+    "interaction_type": "activation",
+    "poor_metaboliser_recommendation": "Avoid — severely reduced antiplatelet effect; use prasugrel or ticagrelor instead",
+    "intermediate_metaboliser_recommendation": "Consider alternative antiplatelet agent; monitor platelet function if continued",
+    "severity": "high"
+  },
+  {
+    "gene": "CYP2C19",
+    "drug": "omeprazole",
+    "interaction_type": "metabolism",
+    "poor_metaboliser_recommendation": "Reduce dose by 50%; elevated plasma levels may cause headache or GI disturbance",
+    "intermediate_metaboliser_recommendation": "Standard dose generally tolerated; monitor for adverse effects",
+    "severity": "low"
+  },
+  {
+    "gene": "CYP2C19",
+    "drug": "sertraline",
+    "interaction_type": "metabolism",
+    "poor_metaboliser_recommendation": "Initiate at 50% of standard dose; monitor for serotonergic side effects",
+    "intermediate_metaboliser_recommendation": "Start at low dose and titrate to response",
+    "severity": "moderate"
+  },
+  {
+    "gene": "CYP2C19",
+    "drug": "amitriptyline",
+    "interaction_type": "metabolism",
+    "poor_metaboliser_recommendation": "Avoid or reduce dose substantially; risk of cardiotoxicity from elevated nortriptyline metabolite",
+    "intermediate_metaboliser_recommendation": "Initiate at low dose; perform therapeutic drug monitoring",
+    "severity": "high"
+  },
+  {
+    "gene": "CYP2C19",
+    "drug": "escitalopram",
+    "interaction_type": "metabolism",
+    "poor_metaboliser_recommendation": "Cap daily dose at 10 mg; elevated exposure increases QTc prolongation risk",
+    "intermediate_metaboliser_recommendation": "Standard dosing with monitoring for adverse effects",
+    "severity": "moderate"
+  },
+  {
+    "gene": "TPMT",
+    "drug": "azathioprine",
+    "interaction_type": "metabolism",
+    "poor_metaboliser_recommendation": "Avoid — risk of severe, life-threatening myelosuppression; use alternative immunosuppressant",
+    "intermediate_metaboliser_recommendation": "Reduce dose to 30–70% of standard; monitor CBC frequently",
+    "severity": "high"
+  },
+  {
+    "gene": "TPMT",
+    "drug": "mercaptopurine",
+    "interaction_type": "metabolism",
+    "poor_metaboliser_recommendation": "Avoid — risk of fatal haematological toxicity; choose alternative therapy",
+    "intermediate_metaboliser_recommendation": "Reduce dose to 50% of standard; monitor CBC weekly initially",
+    "severity": "high"
+  },
+  {
+    "gene": "DPYD",
+    "drug": "fluorouracil",
+    "interaction_type": "metabolism",
+    "poor_metaboliser_recommendation": "Avoid — life-threatening toxicity (severe mucositis, myelosuppression, neurotoxicity)",
+    "intermediate_metaboliser_recommendation": "Reduce dose by 50%; closely monitor for toxicity",
+    "severity": "high"
+  },
+  {
+    "gene": "DPYD",
+    "drug": "capecitabine",
+    "interaction_type": "metabolism",
+    "poor_metaboliser_recommendation": "Avoid — prodrug of fluorouracil; same life-threatening toxicity risk",
+    "intermediate_metaboliser_recommendation": "Reduce starting dose by 50%; increase slowly if tolerated",
+    "severity": "high"
+  },
+  {
+    "gene": "SLCO1B1",
+    "drug": "simvastatin",
+    "interaction_type": "transport",
+    "poor_metaboliser_recommendation": "Avoid simvastatin >20 mg/day; high plasma exposure greatly increases myopathy and rhabdomyolysis risk",
+    "intermediate_metaboliser_recommendation": "Limit simvastatin dose to 20 mg/day; monitor for muscle symptoms",
+    "severity": "high"
+  },
+  {
+    "gene": "UGT1A1",
+    "drug": "irinotecan",
+    "interaction_type": "metabolism",
+    "poor_metaboliser_recommendation": "Reduce starting dose; elevated SN-38 levels cause severe neutropenia and diarrhoea",
+    "intermediate_metaboliser_recommendation": "Use with caution at standard dose; monitor closely for toxicity",
+    "severity": "high"
+  }
+]

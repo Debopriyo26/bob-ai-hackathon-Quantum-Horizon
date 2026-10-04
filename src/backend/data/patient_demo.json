@@ -1,0 +1,35 @@
+{
+  "name": "Demo Patient",
+  "age": 72,
+  "sex": "male",
+  "weight_kg": 78,
+  "medications": [
+    "warfarin",
+    "amiodarone",
+    "metformin",
+    "simvastatin",
+    "omeprazole",
+    "codeine"
+  ],
+  "comorbidities": [
+    "renal_impairment",
+    "heart_failure"
+  ],
+  "pgx_profile": {
+    "CYP2D6": "poor",
+    "CYP2C19": "intermediate",
+    "SLCO1B1": "poor"
+  },
+  "_notes": {
+    "red_interactions": [
+      "warfarin + amiodarone — amiodarone inhibits CYP2C9/CYP3A4, markedly potentiating warfarin anticoagulation; well-documented serious DDI on FDA label",
+      "codeine — patient is CYP2D6 poor metaboliser; codeine cannot be converted to morphine (ineffective) but CPIC recommends avoid due to life-threatening risk classification",
+      "simvastatin — patient carries SLCO1B1 poor variant; markedly elevated simvastatin acid exposure → high myopathy / rhabdomyolysis risk"
+    ],
+    "amber_interactions": [
+      "metformin — renal impairment comorbidity (weight 10) raises lactic acidosis risk",
+      "omeprazole — patient is CYP2C19 intermediate; moderately elevated exposure (CPIC low severity)",
+      "amiodarone — heart failure comorbidity (weight 5) and hepatic concerns"
+    ]
+  }
+}
