@@ -17,7 +17,8 @@ An intelligent, dual-role (Doctor/Patient) clinical decision support platform th
 
 ## 🎯 Problem Statement
 
-Clinicians lack the time to manually cross-reference complex drug-drug interactions, patient comorbidities, and pharmacogenomic data during time-pressured appointments, leading to a high risk of adverse drug events.
+P1 - Drug Interaction Risk Assistant 
+PROBLEM STATEMENT & CHALLENGE - Adverse drug-drug interactions (DDIs) cause 125,000 deaths and over 1 million hospitalisations annually in the US. Polypharmacy patients — those taking 5+ medications — are especially at risk. Clinicians must mentally check every new prescription against a patient's full medication list, comorbidities, and genetic factors, under time pressure. No tool currently integrates all three dimensions to give a complete, ranked risk picture at the point of prescribing.
 
 ---
 
