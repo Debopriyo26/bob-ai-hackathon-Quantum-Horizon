@@ -1,5 +1,5 @@
 # Bob AI Innovation Hackathon Submission Template — Complete Guide
-
+ 
 This guide explains how to use the
 [bob-ai-hackathon-submission-template](https://github.com/drijesh-ppatel/bob-ai-hackathon-submission-template)
 to structure and submit your hackathon entry.
