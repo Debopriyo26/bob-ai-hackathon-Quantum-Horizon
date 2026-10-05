@@ -1,4 +1,4 @@
-# 🚀 Clin.IQ — Clinical Decision Support Platform
+# 🚀 Clin.IQ — Clinical Decision Support Platform 
 
 An intelligent, dual-role (Doctor/Patient) clinical decision support platform that evaluates complex polypharmacy regimens using a local rule-based AI engine to generate instant risk scores, clinical insights, and safer prescribing alternatives.
 
