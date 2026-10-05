@@ -1,4 +1,4 @@
-# Solution Overview: Clin.IQ Clinical Decision Support Platform
+# Solution Overview: Clin.IQ Clinical Decision Support Platform 
 
 ## What We Built
 
