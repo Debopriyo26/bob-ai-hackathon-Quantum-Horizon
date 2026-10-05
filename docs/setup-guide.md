@@ -1,4 +1,4 @@
-# Setup & Execution Guide: Clin.IQ
+# Setup & Execution Guide: Clin.IQ 
 
 This guide provides step-by-step instructions to set up, configure, and execute the **Clin.IQ** platform locally from source.
 
