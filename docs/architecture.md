@@ -1,4 +1,4 @@
-# Architecture: Clin.IQ System Design
+# Architecture: Clin.IQ System Design 
 
 ## System Architecture
 
