@@ -1,0 +1,20 @@
+{
+  "functions": {
+    "api/index.py": {
+      "includeFiles": [
+        "frontend/**",
+        "assets/**",
+        "*.html",
+        "*.js",
+        "*.css",
+        "backend/data/**"
+      ]
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/index.py"
+    }
+  ]
+}

@@ -8,12 +8,10 @@ import json
 import sqlite3
 import hashlib
 import secrets
-import sys
+import os
+import shutil
+import tempfile
 from pathlib import Path
-
-_backend_dir = Path(__file__).resolve().parent
-if str(_backend_dir) not in sys.path:
-    sys.path.insert(0, str(_backend_dir))
 
 # pyrefly: ignore [missing-import]
 from flask import Flask, jsonify, request, g, send_from_directory
@@ -23,14 +21,25 @@ from modules.ddi import get_ddi_interactions
 from modules.comorbidity import get_comorbidity_risks
 from modules.pgx import get_pgx_risks
 from scorer import compute_risk
+try:
+    import frontend  # noqa: F401
+except ImportError:
+    pass
 
-_FRONTEND_DIR = Path(__file__).parent.parent / "frontend"
+_FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
 
 app = Flask(__name__, static_folder=str(_FRONTEND_DIR), static_url_path="")
 CORS(app, supports_credentials=True)
 
-_DB_PATH = Path(__file__).parent / "data" / "cliniq.db"
-_DEMO_PATIENT_FILE = Path(__file__).parent / "data" / "patient_demo.json"
+_IS_SERVERLESS = bool(os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"))
+_ORIG_DB_PATH = Path(__file__).resolve().parent / "data" / "cliniq.db"
+_DEMO_PATIENT_FILE = Path(__file__).resolve().parent / "data" / "patient_demo.json"
+
+if _IS_SERVERLESS:
+    _TMP_DIR = Path(tempfile.gettempdir())
+    _DB_PATH = _TMP_DIR / "cliniq.db"
+else:
+    _DB_PATH = _ORIG_DB_PATH
 
 # ── In-memory session store: token → {user_id, role} ──────────────────────
 _sessions: dict = {}
@@ -38,11 +47,30 @@ _sessions: dict = {}
 
 # ── Database helpers ───────────────────────────────────────────────────────
 
+def _ensure_db_ready():
+    """Ensure the SQLite DB file is available and initialized, especially in serverless."""
+    if _IS_SERVERLESS and not _DB_PATH.exists():
+        if _ORIG_DB_PATH.exists():
+            try:
+                shutil.copyfile(str(_ORIG_DB_PATH), str(_DB_PATH))
+                return
+            except Exception:
+                pass
+        _init_db()
+
+
 def _get_db():
     if "db" not in g:
-        g.db = sqlite3.connect(str(_DB_PATH))
+        _ensure_db_ready()
+        g.db = sqlite3.connect(str(_DB_PATH), timeout=20.0)
         g.db.row_factory = sqlite3.Row
-        g.db.execute("PRAGMA journal_mode=WAL")
+        try:
+            g.db.execute("PRAGMA journal_mode=WAL")
+        except Exception:
+            try:
+                g.db.execute("PRAGMA journal_mode=DELETE")
+            except Exception:
+                pass
     return g.db
 
 
@@ -55,7 +83,11 @@ def _close_db(exc):
 
 def _init_db():
     """Create tables if they don't exist and seed the demo patient."""
-    db = sqlite3.connect(str(_DB_PATH))
+    try:
+        _DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
+    db = sqlite3.connect(str(_DB_PATH), timeout=20.0)
     db.row_factory = sqlite3.Row
     db.executescript("""
         CREATE TABLE IF NOT EXISTS users (
@@ -148,15 +180,52 @@ def _require_role(*roles):
 
 # ── Static Frontend Routes (Serves the UI directly on port 5000) ───────────
 
+def _find_static_file(filename):
+    task_dir = Path(__file__).resolve().parent
+    candidates = [
+        task_dir / "frontend",
+        task_dir,
+        task_dir.parent / "frontend",
+        task_dir.parent,
+        _FRONTEND_DIR
+    ]
+    for d in candidates:
+        target = d / filename
+        if target.is_file():
+            return target, d
+    return None, None
+
+
 @app.route("/")
 def serve_index():
-    return send_from_directory(str(_FRONTEND_DIR), "index.html")
+    path, d = _find_static_file("auth.html")
+    if not path:
+        path, d = _find_static_file("index.html")
+    if path:
+        return send_from_directory(str(d), path.name)
+    return jsonify({"status": "ok", "app": "Clin.IQ"}), 200
+
+
+@app.route("/api/debug-paths")
+def debug_paths():
+    base = Path(__file__).resolve().parent
+    root = base.parent
+    task = Path("/var/task")
+    return jsonify({
+        "file": str(__file__),
+        "base": str(base),
+        "root": str(root),
+        "base_contents": [p.name for p in base.iterdir()] if base.is_dir() else [],
+        "root_contents": [p.name for p in root.iterdir()] if root.is_dir() else [],
+        "task_contents": [p.name for p in task.iterdir()] if task.is_dir() else []
+    })
+
 
 @app.route("/<path:filename>")
 def serve_static(filename):
-    target = _FRONTEND_DIR / filename
-    if target.is_file():
-        return send_from_directory(str(_FRONTEND_DIR), filename)
+    path, d = _find_static_file(filename)
+    if path:
+        return send_from_directory(str(d), filename)
     return jsonify({"error": f"File '{filename}' not found"}), 404
 
 
@@ -583,8 +652,8 @@ def _generate_clinical_insights(medications: list, comorbidities: list, pgx_prof
 
 
 # Pre-load CPIC and comorbidity data for the insights engine at module level
-_CPIC_DATA     = json.loads((Path(__file__).parent / "data" / "cpic_lookup.json").read_text())
-_COMORB_WEIGHTS = json.loads((Path(__file__).parent / "data" / "comorbidity_weights.json").read_text())
+_CPIC_DATA     = json.loads((Path(__file__).resolve().parent / "data" / "cpic_lookup.json").read_text(encoding="utf-8"))
+_COMORB_WEIGHTS = json.loads((Path(__file__).resolve().parent / "data" / "comorbidity_weights.json").read_text(encoding="utf-8"))
 
 
 @app.route("/api/ai-assessment", methods=["GET", "POST"])
@@ -820,13 +889,14 @@ def _safe_json(val, default):
 
 
 # ── Bootstrap ──────────────────────────────────────────────────────────────
-# Run _init_db() only in the main process (not the Werkzeug reloader child).
-# When WERKZEUG_RUN_MAIN is set we are already in the reloaded child — skip.
-import os as _os
-if _os.environ.get("WERKZEUG_RUN_MAIN") != "true":
-    _init_db()
+# In local development, initialise DB before server starts.
+# In serverless environments, DB is prepared lazily in /tmp via _ensure_db_ready().
+if not _IS_SERVERLESS and os.environ.get("WERKZEUG_RUN_MAIN") != "true":
+    try:
+        _init_db()
+    except Exception as _e:
+        print(f"Warning: _init_db failed: {_e}")
 
 if __name__ == "__main__":
-    # Ensure DB is initialised before the server starts in direct-run mode too.
     _init_db()
     app.run(debug=False, port=5000)

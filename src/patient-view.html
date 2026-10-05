@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clin.IQ — Patient Clinical Review</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="doctor-root patient-view-body">
+
+  <!-- ── Navigation ─────────────────────────────────────────────────────── -->
+  <nav class="cliniq-nav">
+    <div class="nav-logo" onclick="window.location.href='doctor.html'" style="cursor:pointer;" title="Back to Doctor Dashboard">
+      <div class="nav-logo-mark">
+        <img src="assets/logo-mark.svg" alt="Clin.IQ Logo" width="34" height="34" />
+      </div>
+      <span class="nav-logo-name">Clin.IQ</span>
+      <span class="nav-logo-role">Doctor Workstation</span>
+    </div>
+    <div class="nav-spacer"></div>
+    <div class="nav-user">
+      <div class="nav-avatar" id="nav-avatar">?</div>
+      <span class="nav-user-name" id="nav-user-name">—</span>
+      <button class="btn-logout" onclick="logout()">Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- ── Main Dedicated Clinical View ──────────────────────────────────── -->
+  <main class="pv-container">
+
+    <!-- Top Breadcrumb & Back Bar -->
+    <div class="pv-top-bar">
+      <a href="doctor.html" class="pv-back-link">
+        <span class="pv-back-arrow">←</span>
+        <span>Back to Patient List</span>
+      </a>
+      <span class="pv-badge-status" id="pv-status-pill">Dedicated Patient Record</span>
+    </div>
+
+    <!-- Error Banner -->
+    <div id="pv-error-banner" class="error-banner hidden" style="margin-bottom: 20px;"></div>
+
+    <!-- Patient Hero Header Card -->
+    <div class="pv-hero-card">
+      <div class="pv-hero-left">
+        <div class="pv-avatar" id="pv-avatar">--</div>
+        <div class="pv-hero-info">
+          <div class="pv-name-row">
+            <h1 class="pv-name" id="pv-name">Loading Patient…</h1>
+            <span class="pv-id-badge" id="pv-id-badge">ID: --</span>
+          </div>
+          <div class="pv-email" id="pv-email">Loading details…</div>
+          <div class="pv-demo-pills" id="pv-demo-pills">
+            <span class="pv-pill demo">Age: —</span>
+            <span class="pv-pill demo">Sex: —</span>
+            <span class="pv-pill demo">Weight: —</span>
+          </div>
+        </div>
+      </div>
+      <div class="pv-hero-actions">
+        <button class="pv-btn-primary" id="btn-pv-run-ai" onclick="runAiCoPilot()">
+          <span>🤖 Run AI Co-Pilot</span>
+        </button>
+        <button class="pv-btn-secondary" id="btn-pv-run-assess" onclick="runAssessment()">
+          <span>⚡ Run DDI Risk Assessment</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main 2-Column Clinical Grid -->
+    <div class="pv-grid">
+
+      <!-- LEFT COLUMN: Patient Baseline & Safety Check -->
+      <div class="pv-col">
+
+        <!-- Active Medications Card -->
+        <div class="card pv-card">
+          <div class="pv-card-header">
+            <div class="pv-card-title-wrap">
+              <span class="pv-card-icon">💊</span>
+              <h2 class="pv-card-title">Active Medications</h2>
+            </div>
+            <span class="pv-count-badge" id="pv-meds-count">0 prescribed</span>
+          </div>
+          <p class="pv-card-desc">Current pharmacological regimen prescribed to the patient.</p>
+          <div class="pv-pills-wrap" id="pv-meds-list">
+            <span class="pv-empty-text">No medications recorded</span>
+          </div>
+        </div>
+
+        <!-- Comorbidities Card -->
+        <div class="card pv-card">
+          <div class="pv-card-header">
+            <div class="pv-card-title-wrap">
+              <span class="pv-card-icon">🩺</span>
+              <h2 class="pv-card-title">Diagnosed Comorbidities</h2>
+            </div>
+            <span class="pv-count-badge warning" id="pv-comorb-count">0 conditions</span>
+          </div>
+          <p class="pv-card-desc">Chronic and diagnosed conditions affecting drug safety profiles.</p>
+          <div class="pv-pills-wrap" id="pv-comorb-list">
+            <span class="pv-empty-text">None recorded</span>
+          </div>
+        </div>
+
+        <!-- Pharmacogenomics (PGx) Card -->
+        <div class="card pv-card">
+          <div class="pv-card-header">
+            <div class="pv-card-title-wrap">
+              <span class="pv-card-icon">🧬</span>
+              <h2 class="pv-card-title">Pharmacogenomics (PGx)</h2>
+            </div>
+            <span class="pv-count-badge teal" id="pv-pgx-count">0 variants</span>
+          </div>
+          <p class="pv-card-desc">Metabolic gene variants modifying enzyme expression and drug clearance.</p>
+          <div class="pv-pgx-grid" id="pv-pgx-list">
+            <span class="pv-empty-text">No PGx variants flagged</span>
+          </div>
+        </div>
+
+        <!-- Prescription Safety Checker Card -->
+        <div class="card pv-card pv-rx-card">
+          <div class="pv-card-header">
+            <div class="pv-card-title-wrap">
+              <span class="pv-card-icon">🛡️</span>
+              <h2 class="pv-card-title">Prescription Safety Checker</h2>
+            </div>
+            <span class="pv-badge-safe">Instant Pre-Check</span>
+          </div>
+          <p class="pv-card-desc">Test a new drug against this patient's medications, comorbidities, and PGx profile prior to signing.</p>
+          
+          <div class="pv-rx-input-group">
+            <input id="rx-drug-input" class="pv-text-input" type="text" placeholder="Enter medication name (e.g. simvastatin, lisinopril, ibuprofen)…" />
+            <button class="pv-btn-action" id="btn-rx-check" onclick="runRxCheck()">Check Safety</button>
+          </div>
+
+          <div id="rx-spinner" class="hidden pv-spinner-inline">
+            <div class="spinner" style="width:24px;height:24px;border-width:3px;"></div>
+            <span>Evaluating pharmacological compatibility…</span>
+          </div>
+
+          <div id="rx-result" class="hidden" style="margin-top:16px;"></div>
+        </div>
+
+      </div><!-- /.pv-col (Left) -->
+
+      <!-- RIGHT COLUMN: AI Co-Pilot & DDI Risk Assessment -->
+      <div class="pv-col">
+
+        <!-- ── AI Co-Pilot Insights Card ────────────────────────────── -->
+        <div class="card pv-card pv-copilot-card" id="ai-copilot-card">
+          <div class="pv-copilot-top">
+            <div class="pv-copilot-heading">
+              <div class="ai-copilot-avatar pv-large-avatar">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2a2 2 0 0 1 2 2v1a7 7 0 0 1 7 7v1a2 2 0 0 1-2 2h-1v2a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3v-2H5a2 2 0 0 1-2-2v-1a7 7 0 0 1 7-7V4a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  <circle cx="9" cy="11" r="1.5" fill="currentColor"/>
+                  <circle cx="15" cy="11" r="1.5" fill="currentColor"/>
+                  <path d="M9 16h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <h2 class="pv-copilot-title">AI Co-Pilot Insights</h2>
+                  <span class="watsonx-badge pv-watson-badge">IBM watsonx.ai</span>
+                </div>
+                <p class="pv-copilot-desc">High-speed regimen assessment vs. comorbidities &amp; PGx metabolic profile</p>
+              </div>
+            </div>
+            <button class="pv-btn-copilot" id="btn-run-ai-copilot" onclick="runAiCoPilot()">
+              <span>⚡ Run AI Assessment</span>
+            </button>
+          </div>
+
+          <!-- Spinner -->
+          <div id="ai-copilot-spinner" class="hidden" style="padding: 32px 0; text-align:center;">
+            <div class="spinner-wrap" style="justify-content:center;">
+              <div class="spinner" style="width:36px; height:36px; border-width:4px;"></div>
+              <p class="spinner-text" style="font-size:15px; margin-top:12px; font-weight:600; color:var(--brand-dark);">
+                Consulting IBM watsonx.ai Foundation Model (ibm/granite-13b-instruct-v2)…
+              </p>
+            </div>
+          </div>
+
+          <!-- Error -->
+          <div id="ai-copilot-error" class="error-banner hidden" style="margin-top:16px;"></div>
+
+          <!-- Co-Pilot Content -->
+          <div id="ai-copilot-content">
+            <div id="ai-copilot-placeholder" class="pv-copilot-placeholder">
+              <div style="font-size:28px; margin-bottom:10px;">⚡</div>
+              <h3 style="font-size:17px; font-weight:700; color:#1e3a8a; margin-bottom:6px;">Ready for AI Clinical Assessment</h3>
+              <p style="font-size:14.5px; color:#475569; max-width:540px; margin: 0 auto; line-height:1.6;">
+                Click <strong>Run AI Assessment</strong> to evaluate prescribed medicines against this patient's comorbidities and pharmacogenomics profile. Watsonx will detect RED-flag risks and explicitly propose safe alternative medications.
+              </p>
+            </div>
+
+            <div id="ai-copilot-results" class="hidden">
+              <!-- Short natural-language risk summary -->
+              <div class="pv-risk-summary-box">
+                <div class="pv-risk-summary-header">
+                  <span class="ai-risk-indicator red pv-large-risk-pill" id="ai-risk-pill">HIGH RISK</span>
+                  <span class="pv-risk-summary-title">Clinical Risk Summary</span>
+                </div>
+                <p class="pv-risk-summary-text" id="ai-risk-summary-text"></p>
+              </div>
+
+              <!-- RED-flagged Drugs & Suggested Safe Alternatives -->
+              <div class="pv-alternatives-box" id="ai-alternatives-card">
+                <div class="pv-alternatives-header">
+                  <span style="font-size:20px;">💡</span>
+                  <span style="font-weight:700; color:#78350f; font-size:16px;">
+                    Suggested Safe Alternatives for RED-Flagged Drugs
+                  </span>
+                </div>
+                <div class="pv-alternatives-list" id="ai-alternatives-list"></div>
+              </div>
+
+              <!-- IBM watsonx.ai Full Narrative -->
+              <div class="ai-narrative-container" style="margin-top:16px;">
+                <div class="ai-narrative-header" onclick="toggleWatsonxDetails()" style="padding:12px 18px; font-size:13.5px;">
+                  <span>📋 IBM watsonx.ai Full Synthesis &amp; Clinical Reasoning</span>
+                  <span id="ai-toggle-arrow">▼</span>
+                </div>
+                <pre class="ai-insights-body pv-insights-text" id="ai-narrative-text"></pre>
+              </div>
+
+              <div class="ai-footer-meta" style="margin-top:12px; font-size:12.5px;">
+                <span>Model: <code id="ai-model-label">ibm/granite-13b-instruct-v2</code></span>
+                <span>Evaluated: <strong id="ai-evaluated-time">—</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── DDI Risk Assessment Card ─────────────────────────────── -->
+        <div class="card pv-card" id="assess-card">
+          <div class="pv-card-header">
+            <div class="pv-card-title-wrap">
+              <span class="pv-card-icon">⚠️</span>
+              <h2 class="pv-card-title">DDI Interaction &amp; Risk Assessment</h2>
+            </div>
+            <button class="pv-btn-action-sm" id="btn-run-assess" onclick="runAssessment()">
+              ⚡ Run Assessment
+            </button>
+          </div>
+
+          <!-- Spinner -->
+          <div id="assess-spinner" class="hidden" style="padding:32px 0; text-align:center;">
+            <div class="spinner-wrap" style="justify-content:center;">
+              <div class="spinner" style="width:36px; height:36px; border-width:4px;"></div>
+              <p class="spinner-text" style="font-size:15px; margin-top:12px; font-weight:600; color:var(--brand-dark);">
+                Querying OpenFDA Pharmacological Interactivity Database…
+              </p>
+            </div>
+          </div>
+
+          <!-- Error -->
+          <div id="assess-error" class="error-banner hidden" style="margin-top:16px;"></div>
+
+          <!-- Results -->
+          <div id="assess-placeholder" class="pv-copilot-placeholder" style="background:#f8fafc; border:1px dashed var(--border);">
+            <div style="font-size:28px; margin-bottom:10px;">🩺</div>
+            <h3 style="font-size:17px; font-weight:700; color:#0f172a; margin-bottom:6px;">DDI Risk Analysis Ready</h3>
+            <p style="font-size:14px; color:#475569; max-width:480px; margin: 0 auto; line-height:1.6;">
+              Compute multidimensional drug-drug, drug-disease, and drug-gene contraindications with OpenFDA severity weighting.
+            </p>
+          </div>
+
+          <div id="assess-results" class="hidden">
+            <!-- Big Score Card -->
+            <div id="assess-score-card" class="score-card pv-score-card">
+              <div class="score-ring pv-score-ring" id="assess-ring">
+                <span class="score-number pv-score-num" id="assess-score-num">—</span>
+                <span class="score-denom" style="font-size:18px;">/100</span>
+              </div>
+              <div>
+                <div class="score-band-label pv-score-band" id="assess-band-label">—</div>
+                <p class="score-sub pv-score-sub" id="assess-score-sub"></p>
+              </div>
+            </div>
+
+            <!-- Interactions Table -->
+            <div class="pv-table-section">
+              <h3 style="font-size:16px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+                <span>Detailed Contraindications</span>
+                <span class="pv-count-badge" id="pv-table-count">0 items</span>
+              </h3>
+              <div class="table-wrap">
+                <table class="interactions-table pv-large-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Type</th>
+                      <th>Drug A</th>
+                      <th>Drug B / Condition</th>
+                      <th>Score</th>
+                      <th>Severity</th>
+                      <th>Clinical Description</th>
+                    </tr>
+                  </thead>
+                  <tbody id="assess-interactions-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.pv-col (Right) -->
+
+    </div><!-- /.pv-grid -->
+
+  </main>
+
+  <!-- ── Description expand modal ─────────────────────────────────────── -->
+  <div class="desc-modal-overlay hidden" id="desc-modal-overlay" onclick="closeDescModal()">
+    <div class="desc-modal" onclick="event.stopPropagation()">
+      <div class="desc-modal-header">
+        <span class="desc-modal-title" id="desc-modal-title"></span>
+        <button class="desc-modal-close" onclick="closeDescModal()" aria-label="Close">✕</button>
+      </div>
+      <p class="desc-modal-body" id="desc-modal-body" style="font-size:15px; line-height:1.7;"></p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="patient-view.js"></script>
+</body>
+</html>

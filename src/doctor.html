@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clin.IQ — Doctor Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="doctor-root">
+
+  <!-- ── Nav ─────────────────────────────────────────────────────── -->
+  <nav class="cliniq-nav">
+    <div class="nav-logo">
+      <div class="nav-logo-mark">
+        <img src="assets/logo-mark.svg" alt="Clin.IQ Logo" width="34" height="34" />
+      </div>
+      <span class="nav-logo-name">Clin.IQ</span>
+      <span class="nav-logo-role">Doctor</span>
+    </div>
+    <div class="nav-spacer"></div>
+    <div class="nav-user">
+      <div class="nav-avatar" id="nav-avatar">?</div>
+      <span class="nav-user-name" id="nav-user-name">—</span>
+      <button class="btn-logout" onclick="logout()">Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- ── Body ─────────────────────────────────────────────────────── -->
+  <main class="doctor-body">
+
+    <!-- Stats row -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon blue">👥</div>
+        <div>
+          <div class="stat-val" id="stat-patients">—</div>
+          <div class="stat-lbl">Registered Patients</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon purple">💊</div>
+        <div>
+          <div class="stat-val" id="stat-polypharmacy">—</div>
+          <div class="stat-lbl">Polypharmacy Patients (5+ meds)</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon teal">🧬</div>
+        <div>
+          <div class="stat-val" id="stat-pgx">—</div>
+          <div class="stat-lbl">Patients with PGx Flags</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Patient list header -->
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+      <h2 style="font-size:18px; font-weight:700;">Patient List</h2>
+      <span id="patient-list-sub" style="font-size:13px; color:var(--text-2);">Loading…</span>
+    </div>
+
+    <!-- Error -->
+    <div id="error-banner" class="error-banner hidden" style="margin-bottom:16px;"></div>
+
+    <!-- Patient rows -->
+    <div class="patient-list" id="patient-list">
+      <div class="card" style="padding:48px; text-align:center; color:var(--text-2);">Loading patients…</div>
+    </div>
+
+  </main>
+
+  <!-- ── Patient detail slide-over ────────────────────────────────── -->
+  <div class="detail-overlay hidden" id="detail-overlay" onclick="closeDetail(event)">
+    <div class="detail-panel" id="detail-panel">
+
+      <div class="detail-header">
+        <button class="detail-back" onclick="closeDetailPanel()" title="Back to list">←</button>
+        <div class="detail-header-info">
+          <div class="detail-patient-name" id="detail-name">—</div>
+          <div class="detail-patient-email" id="detail-email">—</div>
+        </div>
+      </div>
+
+      <div class="detail-body">
+
+        <!-- Demographics -->
+        <div class="detail-section" id="detail-demographics"></div>
+
+        <!-- Medications -->
+        <div class="detail-section">
+          <div class="detail-section-title">💊 Medications</div>
+          <div class="detail-meds" id="detail-meds"></div>
+        </div>
+
+        <!-- Comorbidities -->
+        <div class="detail-section">
+          <div class="detail-section-title">🩺 Comorbidities</div>
+          <div class="detail-comorb" id="detail-comorb"></div>
+        </div>
+
+        <!-- PGx -->
+        <div class="detail-section">
+          <div class="detail-section-title">🧬 Pharmacogenomics (PGx)</div>
+          <div id="detail-pgx"></div>
+        </div>
+
+        <!-- ── AI Clinical Co-Pilot Card ────────────────────────── -->
+        <div class="ai-copilot-card card" id="ai-copilot-card" style="margin-bottom:20px;">
+          <div class="ai-copilot-header">
+            <div class="ai-copilot-title-group">
+              <div class="ai-copilot-avatar">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2a2 2 0 0 1 2 2v1a7 7 0 0 1 7 7v1a2 2 0 0 1-2 2h-1v2a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3v-2H5a2 2 0 0 1-2-2v-1a7 7 0 0 1 7-7V4a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  <circle cx="9" cy="11" r="1.5" fill="currentColor"/>
+                  <circle cx="15" cy="11" r="1.5" fill="currentColor"/>
+                  <path d="M9 16h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <h3 class="card-title" style="margin-bottom:0; font-size:16px;">AI Co-Pilot Insights</h3>
+                  <span class="watsonx-badge">IBM watsonx.ai</span>
+                </div>
+                <p class="ai-copilot-subtitle">Evaluates regimen against patient comorbidities &amp; PGx profile</p>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="btn-run-ai-copilot" onclick="runAiCoPilot()" style="background:linear-gradient(135deg,#0f62fe 0%,#0043ce 100%); display:flex; align-items:center; gap:6px; padding:8px 14px; font-size:13px;">
+              <span>⚡ Run AI Assessment</span>
+            </button>
+          </div>
+
+          <div id="ai-copilot-spinner" class="hidden" style="padding:20px 0;">
+            <div class="spinner-wrap">
+              <div class="spinner"></div>
+              <p class="spinner-text">Querying IBM watsonx.ai Foundation Model (ibm/granite-13b-instruct-v2)…</p>
+            </div>
+          </div>
+
+          <div id="ai-copilot-error" class="error-banner hidden" style="margin-top:12px;"></div>
+
+          <div id="ai-copilot-content" style="margin-top:14px;">
+            <div id="ai-copilot-placeholder" class="ai-copilot-placeholder">
+              Click <strong>Run AI Assessment</strong> to evaluate this patient's prescribed medicines against comorbidities and pharmacogenomics variants, receive a natural-language risk summary, and generate safe medication alternatives.
+            </div>
+
+            <div id="ai-copilot-results" class="hidden">
+              <!-- Short natural-language risk summary -->
+              <div class="ai-risk-summary-card">
+                <div class="ai-risk-summary-header">
+                  <span class="ai-risk-indicator red" id="ai-risk-pill">HIGH RISK</span>
+                  <span class="ai-risk-title">Clinical Risk Summary</span>
+                </div>
+                <p class="ai-risk-summary-text" id="ai-risk-summary-text"></p>
+              </div>
+
+              <!-- RED-flagged Drugs & Suggested Safe Alternatives -->
+              <div class="ai-alternatives-card" id="ai-alternatives-card">
+                <div class="ai-alternatives-header">
+                  <span class="ai-alt-icon">💡</span>
+                  <span style="font-weight:700; color:#78350f;">Suggested Safe Alternatives for RED-Flagged Drugs</span>
+                </div>
+                <div class="ai-alternatives-list" id="ai-alternatives-list"></div>
+              </div>
+
+              <!-- IBM watsonx.ai Full Narrative -->
+              <div class="ai-narrative-container">
+                <div class="ai-narrative-header" onclick="toggleWatsonxDetails()">
+                  <span>IBM watsonx.ai Full Synthesis &amp; Clinical Notes</span>
+                  <span id="ai-toggle-arrow">▼</span>
+                </div>
+                <pre class="ai-insights-body" id="ai-narrative-text"></pre>
+              </div>
+
+              <div class="ai-footer-meta">
+                <span>Model: <code id="ai-model-label">ibm/granite-13b-instruct-v2</code></span>
+                <span id="ai-evaluated-time"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assess button -->
+        <button class="btn-run-assess" id="btn-run-assess" onclick="runAssessment()">
+          ⚡ Run DDI Risk Assessment
+        </button>
+
+        <!-- Assessment results (initially hidden) -->
+        <div id="assess-spinner" class="hidden">
+          <div class="spinner-wrap">
+            <div class="spinner"></div>
+            <p class="spinner-text">Querying OpenFDA — this may take ~30 seconds…</p>
+          </div>
+        </div>
+
+        <div id="assess-error" class="error-banner hidden" style="margin-bottom:16px;"></div>
+
+        <div id="assess-results" class="hidden">
+          <!-- Score card -->
+          <div id="assess-score-card" class="score-card" style="margin-bottom:20px;">
+            <div class="score-ring" id="assess-ring">
+              <span class="score-number" id="assess-score-num">—</span>
+              <span class="score-denom">/100</span>
+            </div>
+            <div class="score-band-label" id="assess-band-label">—</div>
+            <p class="score-sub" id="assess-score-sub"></p>
+          </div>
+
+          <!-- Interactions table -->
+          <div class="card">
+            <div class="card-title"><span class="card-title-icon">📋</span> Interaction Details</div>
+            <div class="table-wrap">
+              <table class="interactions-table">
+                <thead>
+                  <tr>
+                    <th>#</th><th>Type</th><th>Drug A</th>
+                    <th>Drug B / Condition</th><th>Score</th>
+                    <th>Severity</th><th>Description</th>
+                  </tr>
+                </thead>
+                <tbody id="assess-interactions-body"></tbody>
+              </table>
+            </div>
+          </div>
+          <!-- Prescription Safety Checker -->
+          <div class="rx-checker-card" style="margin-bottom:20px;">
+            <div class="rx-checker-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;">
+                <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" stroke="#166534" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="rx-checker-title">Prescription Safety Checker</span>
+            </div>
+            <div class="rx-checker-body">
+              <p class="rx-checker-hint">Enter a drug name to instantly evaluate it against this patient's full profile.</p>
+              <div class="add-row" style="margin-bottom:12px;">
+                <input id="rx-drug-input" class="text-input" type="text" placeholder="e.g. ibuprofen, lisinopril…" />
+                <button class="btn btn-primary" id="btn-rx-check" onclick="runRxCheck()">Check</button>
+              </div>
+              <div id="rx-spinner" class="hidden" style="padding:12px 0; display:flex; align-items:center; gap:10px;">
+                <div class="spinner" style="width:22px;height:22px;border-width:3px;"></div>
+                <span style="font-size:13px;color:var(--text-2);">Evaluating safety…</span>
+              </div>
+              <div id="rx-result" class="hidden"></div>
+            </div>
+          </div>
+
+        </div>
+
+      </div><!-- /.detail-body -->
+    </div><!-- /.detail-panel -->
+  </div>
+
+  <!-- ── Description expand modal ─────────────────────────────────────── -->
+  <div class="desc-modal-overlay hidden" id="desc-modal-overlay" onclick="closeDescModal()">
+    <div class="desc-modal" onclick="event.stopPropagation()">
+      <div class="desc-modal-header">
+        <span class="desc-modal-title" id="desc-modal-title"></span>
+        <button class="desc-modal-close" onclick="closeDescModal()" aria-label="Close">✕</button>
+      </div>
+      <p class="desc-modal-body" id="desc-modal-body"></p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="doctor.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clin.IQ — Sign In</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="auth-root">
+
+  <!-- ── Left hero ─────────────────────────────────────── -->
+  <div class="auth-hero">
+    <div class="hero-logo">
+      <div class="hero-logo-mark">
+        <img src="assets/logo-mark.svg" alt="Clin.IQ Logo" width="40" height="40" />
+      </div>
+      <span class="hero-logo-name">Clin.IQ</span>
+    </div>
+    <h1 class="hero-tagline">Smarter prescribing.<br>Safer patients.</h1>
+    <p class="hero-sub">
+      Clin.IQ integrates drug-drug interaction data, patient comorbidities,
+      and pharmacogenomics to deliver an instant, ranked risk score at the
+      point of prescribing.
+    </p>
+    <div class="hero-pills">
+      <span class="hero-pill">⚡ Real-time DDI Analysis</span>
+      <span class="hero-pill">🧬 Pharmacogenomics</span>
+      <span class="hero-pill">🏥 Comorbidity Aware</span>
+      <span class="hero-pill">📊 Ranked Risk Scores</span>
+    </div>
+  </div>
+
+  <!-- ── Right form ─────────────────────────────────────── -->
+  <div class="auth-form-panel">
+    <div class="auth-form-inner">
+
+      <!-- Tab switcher -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="showLogin()">Sign In</button>
+        <button class="auth-tab" id="tab-signup" onclick="showSignup()">Create Account</button>
+      </div>
+
+      <!-- ── Login form ─────────────────────────────────── -->
+      <div id="panel-login">
+        <h2 class="auth-form-title">Welcome back</h2>
+        <p class="auth-form-sub">Sign in to your Clin.IQ account</p>
+
+        <div id="login-error" class="auth-error hidden"></div>
+
+        <div class="field">
+          <label for="login-email">Email address</label>
+          <input class="field-input" type="email" id="login-email" placeholder="you@example.com" autocomplete="email" />
+        </div>
+        <div class="field">
+          <label for="login-password">Password</label>
+          <input class="field-input" type="password" id="login-password" placeholder="Your password" autocomplete="current-password" />
+        </div>
+
+        <button class="btn-auth" id="login-btn" onclick="doLogin()">Sign In</button>
+
+        <div class="auth-demo-hint">
+          <strong>Demo credentials:</strong><br>
+          Doctor — <strong>doctor@cliniq.demo</strong> / <strong>demo1234</strong><br>
+          Patient — <strong>patient@cliniq.demo</strong> / <strong>demo1234</strong>
+        </div>
+      </div>
+
+      <!-- ── Sign-up form ──────────────────────────────── -->
+      <div id="panel-signup" class="hidden">
+        <h2 class="auth-form-title">Create your account</h2>
+        <p class="auth-form-sub">Join Clin.IQ — choose your role below</p>
+
+        <div id="signup-error" class="auth-error hidden"></div>
+
+        <!-- Role selector -->
+        <div class="role-selector">
+          <div class="role-card selected" id="role-patient" onclick="selectRole('patient')">
+            <div class="role-card-icon">🧑‍⚕️</div>
+            <div class="role-card-label">Patient</div>
+            <div class="role-card-desc">Manage my health profile</div>
+          </div>
+          <div class="role-card" id="role-doctor" onclick="selectRole('doctor')">
+            <div class="role-card-icon">👨‍⚕️</div>
+            <div class="role-card-label">Doctor</div>
+            <div class="role-card-desc">Monitor my patients</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="signup-name">Full name</label>
+          <input class="field-input" type="text" id="signup-name" placeholder="Dr. Jane Smith" autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="signup-email">Email address</label>
+          <input class="field-input" type="email" id="signup-email" placeholder="you@hospital.org" autocomplete="email" />
+        </div>
+        <div class="field">
+          <label for="signup-password">Password <span style="font-weight:400;color:var(--text-3)">(min. 6 characters)</span></label>
+          <input class="field-input" type="password" id="signup-password" placeholder="Create a password" autocomplete="new-password" />
+        </div>
+
+        <button class="btn-auth" id="signup-btn" onclick="doSignup()">Create Account</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="auth.js"></script>
+</body>
+</html>

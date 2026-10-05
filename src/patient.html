@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clin.IQ — My Health Profile</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="patient-root">
+
+  <!-- ── Nav ─────────────────────────────────────────────────────── -->
+  <nav class="cliniq-nav">
+    <div class="nav-logo">
+      <div class="nav-logo-mark">
+        <img src="assets/logo-mark.svg" alt="Clin.IQ Logo" width="34" height="34" />
+      </div>
+      <span class="nav-logo-name">Clin.IQ</span>
+      <span class="nav-logo-role">Patient</span>
+    </div>
+    <div class="nav-spacer"></div>
+    <div class="nav-user">
+      <div class="nav-avatar" id="nav-avatar">?</div>
+      <span class="nav-user-name" id="nav-user-name">—</span>
+      <button class="btn-logout" onclick="logout()">Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- ── Body ─────────────────────────────────────────────────────── -->
+  <main class="patient-body">
+
+    <!-- ── LEFT COLUMN ────────────────────────────────────────────── -->
+    <div class="patient-col-left">
+
+      <!-- Profile header -->
+      <div class="profile-header">
+        <div class="profile-avatar" id="profile-avatar">?</div>
+        <div class="profile-name" id="profile-name">Loading…</div>
+        <div class="profile-email" id="profile-email"></div>
+        <div class="profile-meta">
+          <div class="profile-meta-item">
+            <div class="profile-meta-val" id="profile-med-count">—</div>
+            <div class="profile-meta-lbl">Medications</div>
+          </div>
+          <div class="profile-meta-item">
+            <div class="profile-meta-val" id="profile-comorb-count">—</div>
+            <div class="profile-meta-lbl">Conditions</div>
+          </div>
+          <div class="profile-meta-item">
+            <div class="profile-meta-val" id="profile-pgx-count">—</div>
+            <div class="profile-meta-lbl">PGx Flags</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Basic info card -->
+      <div class="card">
+        <div class="card-title"><span class="card-title-icon">👤</span> Personal Details</div>
+        <div class="meta-fields">
+          <div class="meta-field">
+            <label for="meta-age">Age</label>
+            <input class="text-input" type="number" id="meta-age" placeholder="e.g. 45" min="0" max="120" />
+          </div>
+          <div class="meta-field">
+            <label for="meta-sex">Sex</label>
+            <input class="text-input" type="text" id="meta-sex" list="sex-options" placeholder="e.g. Male" autocomplete="sex" />
+            <datalist id="sex-options">
+              <option value="Male"></option>
+              <option value="Female"></option>
+              <option value="Other"></option>
+            </datalist>
+          </div>
+          <div class="meta-field">
+            <label for="meta-weight">Weight (kg)</label>
+            <input class="text-input" type="number" id="meta-weight" placeholder="e.g. 70" min="0" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Medications card -->
+      <div class="card">
+        <div class="card-title"><span class="card-title-icon">💊</span> Medications</div>
+        <ul class="tag-list" id="med-list"></ul>
+        <div class="add-row">
+          <input id="med-input" class="text-input" type="text" placeholder="Type a drug name and press Enter…" />
+          <button class="btn btn-secondary" onclick="addMedication()">Add</button>
+        </div>
+      </div>
+
+      <!-- Comorbidities card -->
+      <div class="card">
+        <div class="card-title"><span class="card-title-icon">🩺</span> Comorbidities</div>
+        <div class="checkbox-group" id="comorbidity-group"></div>
+      </div>
+
+      <!-- PGx card -->
+      <div class="card">
+        <div class="card-title"><span class="card-title-icon">🧬</span> Pharmacogenomics (PGx)</div>
+        <div class="pgx-group" id="pgx-group"></div>
+      </div>
+
+      <!-- Save + Assess -->
+      <div class="save-bar">
+        <span class="save-bar-status" id="save-status">Unsaved changes</span>
+        <button class="btn btn-secondary" onclick="saveProfile()">Save Profile</button>
+      </div>
+      <button class="btn-assess" onclick="assessRisk()">⚡ Assess My Risk</button>
+
+    </div><!-- /.patient-col-left -->
+
+    <!-- ── RIGHT COLUMN ───────────────────────────────────────────── -->
+    <div class="patient-col-right">
+
+      <!-- Empty state -->
+      <div id="empty-state" class="card" style="padding:60px 24px;">
+        <div class="empty-state">
+          <div class="empty-state-icon">🔬</div>
+          <p>Save your profile and click <strong>Assess My Risk</strong> to see your personalised drug interaction analysis.</p>
+        </div>
+      </div>
+
+      <!-- Spinner -->
+      <div id="spinner" class="card hidden">
+        <div class="spinner-wrap">
+          <div class="spinner"></div>
+          <p class="spinner-text">Querying OpenFDA and analysing interactions…</p>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div id="error-banner" class="error-banner hidden"></div>
+
+      <!-- Score card -->
+      <div id="card-score" class="score-card hidden">
+        <div class="score-ring" id="score-ring">
+          <span class="score-number" id="score-number">—</span>
+          <span class="score-denom">/100</span>
+        </div>
+        <div class="score-band-label" id="score-band-label">—</div>
+        <p class="score-sub" id="score-sub"></p>
+      </div>
+
+      <!-- Interactions table -->
+      <div id="card-interactions" class="card hidden">
+        <div class="card-title"><span class="card-title-icon">📋</span> Interaction Details</div>
+        <div class="table-wrap">
+          <table class="interactions-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Type</th>
+                <th>Drug A</th>
+                <th>Drug B / Condition</th>
+                <th>Score</th>
+                <th>Severity</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody id="interactions-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /.patient-col-right -->
+
+  </main>
+
+  <!-- ── Description expand modal ─────────────────────────────────────── -->
+  <div class="desc-modal-overlay hidden" id="desc-modal-overlay" onclick="closeDescModal()">
+    <div class="desc-modal" onclick="event.stopPropagation()">
+      <div class="desc-modal-header">
+        <span class="desc-modal-title" id="desc-modal-title"></span>
+        <button class="desc-modal-close" onclick="closeDescModal()" aria-label="Close">✕</button>
+      </div>
+      <p class="desc-modal-body" id="desc-modal-body"></p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="patient.js?v=2"></script>
+</body>
+</html>
