@@ -1,4 +1,4 @@
-# Problem Statement: The Polypharmacy Crisis & Clinical Cognitive Overload
+# Problem Statement: The Polypharmacy Crisis & Clinical Cognitive Overload 
 
 ## Background
 
