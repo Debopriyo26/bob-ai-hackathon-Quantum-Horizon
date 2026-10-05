@@ -6,3 +6,4 @@
 <img width="1866" height="727" alt="Doctor Workstation page-1" src="https://github.com/user-attachments/assets/9032868c-0852-47fe-8238-9d4faf0a0450" />
 <img width="1881" height="842" alt="Doctor Workstation page-2" src="https://github.com/user-attachments/assets/da100495-216f-4afc-9d21-bf55cf189b7e" />
 
+
