@@ -1,7 +1,7 @@
 # =============================================================================
 # HACKATHON SUBMISSION — .gitignore
 # =============================================================================
-# IMPORTANT: Never commit secrets, credentials, or large binary files.
+# IMPORTANT: Never commit secrets, credentials, or large binary files. 
 
 # ── Secrets & Environment ─────────────────────────────────────────────────────
 .env
