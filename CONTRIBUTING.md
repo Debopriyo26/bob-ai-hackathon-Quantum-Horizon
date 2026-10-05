@@ -1,4 +1,4 @@
-# How to Submit Your Hackathon Entry
+# How to Submit Your Hackathon Entry 
 
 Follow these steps to set up your submission repository correctly.
 The judges depend on this structure to review your entry — deviations may affect your score.
